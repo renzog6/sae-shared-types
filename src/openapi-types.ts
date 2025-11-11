@@ -129,43 +129,6 @@ export interface paths {
         patch: operations["CompaniesController_update"];
         trace?: never;
     };
-    "/api/companies/categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List business categories */
-        get: operations["BusinessCategoriesController_findAll"];
-        put?: never;
-        /** Create business category */
-        post: operations["BusinessCategoriesController_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/companies/categories/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get business category by id */
-        get: operations["BusinessCategoriesController_findOne"];
-        put?: never;
-        post?: never;
-        /** Delete business category */
-        delete: operations["BusinessCategoriesController_remove"];
-        options?: never;
-        head?: never;
-        /** Update business category */
-        patch: operations["BusinessCategoriesController_update"];
-        trace?: never;
-    };
     "/api/companies/subcategories": {
         parameters: {
             query?: never;
@@ -173,10 +136,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List business subcategories by category id */
+        /** Get all business subcategories */
         get: operations["BusinessSubcategoriesController_findAll"];
         put?: never;
-        /** Create business subcategory */
+        /** Create a new business subcategory */
         post: operations["BusinessSubcategoriesController_create"];
         delete?: never;
         options?: never;
@@ -191,16 +154,87 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get subcategory by id */
+        /** Get a business subcategory by ID */
         get: operations["BusinessSubcategoriesController_findOne"];
         put?: never;
         post?: never;
-        /** Delete business subcategory */
+        /** Delete a business subcategory (soft delete) */
         delete: operations["BusinessSubcategoriesController_remove"];
         options?: never;
         head?: never;
-        /** Update business subcategory */
+        /** Update a business subcategory */
         patch: operations["BusinessSubcategoriesController_update"];
+        trace?: never;
+    };
+    "/api/companies/subcategories/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Restore a deleted business subcategory */
+        patch: operations["BusinessSubcategoriesController_restore"];
+        trace?: never;
+    };
+    "/api/companies/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all business categories */
+        get: operations["BusinessCategoriesController_findAll"];
+        put?: never;
+        /** Create a new business category */
+        post: operations["BusinessCategoriesController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/companies/categories/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a business category by ID */
+        get: operations["BusinessCategoriesController_findOne"];
+        put?: never;
+        post?: never;
+        /** Delete a business category (soft delete) */
+        delete: operations["BusinessCategoriesController_remove"];
+        options?: never;
+        head?: never;
+        /** Update a business category */
+        patch: operations["BusinessCategoriesController_update"];
+        trace?: never;
+    };
+    "/api/companies/categories/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Restore a deleted business category */
+        patch: operations["BusinessCategoriesController_restore"];
         trace?: never;
     };
     "/api/contacts": {
@@ -1235,8 +1269,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all brands */
         get: operations["BrandsController_findAll"];
         put?: never;
+        /** Create a new brand */
         post: operations["BrandsController_create"];
         delete?: never;
         options?: never;
@@ -1251,13 +1287,33 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get a brand by ID */
         get: operations["BrandsController_findOne"];
         put?: never;
         post?: never;
+        /** Delete a brand (soft delete) */
         delete: operations["BrandsController_remove"];
         options?: never;
         head?: never;
+        /** Update a brand */
         patch: operations["BrandsController_update"];
+        trace?: never;
+    };
+    "/api/brands/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Restore a deleted brand */
+        patch: operations["BrandsController_restore"];
         trace?: never;
     };
     "/api/units": {
@@ -1267,8 +1323,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get all units */
         get: operations["UnitsController_findAll"];
         put?: never;
+        /** Create a new unit */
         post: operations["UnitsController_create"];
         delete?: never;
         options?: never;
@@ -1283,13 +1341,33 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get a unit by ID */
         get: operations["UnitsController_findOne"];
         put?: never;
         post?: never;
+        /** Delete a unit (soft delete) */
         delete: operations["UnitsController_remove"];
         options?: never;
         head?: never;
+        /** Update a unit */
         patch: operations["UnitsController_update"];
+        trace?: never;
+    };
+    "/api/units/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Restore a deleted unit */
+        patch: operations["UnitsController_restore"];
         trace?: never;
     };
     "/api/persons": {
@@ -1324,15 +1402,23 @@ export interface paths {
         patch: operations["PersonsController_update"];
         trace?: never;
     };
-    "/api/family": {
+    "/api/persons/family": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /**
+         * Get all family relationships
+         * @description Retrieves all family relationships with pagination and filtering
+         */
         get: operations["FamilyController_findAll"];
         put?: never;
+        /**
+         * Create a new family relationship
+         * @description Creates a new family relationship between two persons
+         */
         post: operations["FamilyController_create"];
         delete?: never;
         options?: never;
@@ -1340,19 +1426,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/family/{id}": {
+    "/api/persons/family/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /**
+         * Get a family relationship by ID
+         * @description Retrieves a specific family relationship by its ID
+         */
         get: operations["FamilyController_findOne"];
         put?: never;
         post?: never;
+        /**
+         * Delete a family relationship
+         * @description Deletes a family relationship by ID
+         */
         delete: operations["FamilyController_remove"];
         options?: never;
         head?: never;
+        /**
+         * Update a family relationship
+         * @description Updates an existing family relationship
+         */
         patch: operations["FamilyController_update"];
         trace?: never;
     };
@@ -2164,28 +2262,6 @@ export interface components {
             /** @description Dirección asociada */
             address?: components["schemas"]["AddressDto"];
         };
-        CreateBusinessCategoryDto: {
-            /**
-             * @description Nombre de la categoría
-             * @example Construcción
-             */
-            name: string;
-            /**
-             * @description Código único
-             * @example CONST
-             */
-            code?: string;
-            /** @description Información adicional */
-            information?: string;
-        };
-        UpdateBusinessCategoryDto: {
-            /** @description Nombre de la categoría */
-            name?: string;
-            /** @description Código único */
-            code?: string;
-            /** @description Información adicional */
-            information?: string;
-        };
         CreateBusinessSubCategoryDto: {
             /**
              * @description Nombre de la subcategoría
@@ -2199,6 +2275,11 @@ export interface components {
              * @example 1
              */
             businessCategoryId: number;
+            /**
+             * @description Estado activo de la subcategoría
+             * @example true
+             */
+            isActive?: boolean;
         };
         UpdateBusinessSubCategoryDto: {
             /** @description Nombre de la subcategoría */
@@ -2207,6 +2288,59 @@ export interface components {
             description?: string;
             /** @description ID de categoría padre */
             businessCategoryId?: number;
+            /**
+             * @description Estado activo de la subcategoría
+             * @example true
+             */
+            isActive?: boolean;
+        };
+        CreateBusinessCategoryDto: {
+            /**
+             * @description Nombre de la categoría
+             * @example Construcción
+             */
+            name: string;
+            /**
+             * @description Código único
+             * @example CONST
+             */
+            code?: string;
+            /** @description Información adicional */
+            information?: string;
+            /**
+             * @description Estado activo
+             * @example true
+             */
+            isActive?: boolean;
+            /**
+             * @description Fecha de eliminación (para soft delete)
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            deletedAt?: string;
+        };
+        UpdateBusinessCategoryDto: {
+            /**
+             * @description Nombre de la categoría
+             * @example Construcción
+             */
+            name?: string;
+            /**
+             * @description Código único
+             * @example CONST
+             */
+            code?: string;
+            /** @description Información adicional */
+            information?: string;
+            /**
+             * @description Estado activo
+             * @example true
+             */
+            isActive?: boolean;
+            /**
+             * @description Fecha de eliminación (para soft delete)
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            deletedAt?: string;
         };
         CreateContactDto: {
             /** @enum {string} */
@@ -2851,20 +2985,48 @@ export interface components {
             status: "ACTIVE" | "INACTIVE";
         };
         CreateFamilyDto: {
-            /** @example Padre */
+            /**
+             * @description Relationship type between the person and relative (e.g., Padre, Madre, Hijo, Esposo, etc.)
+             * @example Padre
+             */
             relationship: string;
-            /** @example 1 */
+            /**
+             * @description ID of the main person in the relationship
+             * @example 1
+             */
             personId: number;
-            /** @example 2 */
+            /**
+             * @description ID of the relative person
+             * @example 2
+             */
             relativeId: number;
+            /**
+             * @description Additional information about the family relationship
+             * @example Relationship established through marriage
+             */
+            information?: string;
         };
         UpdateFamilyDto: {
-            /** @example Padre */
+            /**
+             * @description Relationship type between the person and relative
+             * @example Madre
+             */
             relationship?: string;
-            /** @example 1 */
+            /**
+             * @description ID of the main person in the relationship
+             * @example 1
+             */
             personId?: number;
-            /** @example 2 */
+            /**
+             * @description ID of the relative person
+             * @example 2
+             */
             relativeId?: number;
+            /**
+             * @description Additional information about the family relationship
+             * @example Relationship established through marriage
+             */
+            information?: string;
         };
         CreateDocumentDto: Record<string, never>;
         UpdateDocumentDto: Record<string, never>;
@@ -3256,7 +3418,7 @@ export interface components {
             /**
              * Format: date-time
              * @description Fecha del evento
-             * @example 2025-11-07T19:16:27.688Z
+             * @example 2025-11-11T20:52:13.388Z
              */
             date?: string;
             /**
@@ -3736,110 +3898,19 @@ export interface operations {
             };
         };
     };
-    BusinessCategoriesController_findAll: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    BusinessCategoriesController_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateBusinessCategoryDto"];
-            };
-        };
-        responses: {
-            /** @description Category created successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    BusinessCategoriesController_findOne: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    BusinessCategoriesController_remove: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    BusinessCategoriesController_update: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateBusinessCategoryDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     BusinessSubcategoriesController_findAll: {
         parameters: {
-            query: {
-                categoryId: string;
+            query?: {
+                /** @description Page number (1-based) */
+                page?: number;
+                /** @description Items per page */
+                limit?: number;
+                /** @description Search query */
+                q?: string;
+                /** @description Sort field */
+                sortBy?: string;
+                /** @description Sort order */
+                sortOrder?: "asc" | "desc";
             };
             header?: never;
             path?: never;
@@ -3847,6 +3918,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Business subcategories retrieved successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3868,8 +3940,15 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Subcategory created successfully */
+            /** @description Business subcategory created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3882,13 +3961,21 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Business subcategory retrieved successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business subcategory not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3901,13 +3988,21 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Business subcategory deleted successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business subcategory not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3920,7 +4015,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -3930,7 +4025,212 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Business subcategory updated successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business subcategory not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessSubcategoriesController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Business subcategory restored successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business subcategory not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_findAll: {
+        parameters: {
+            query?: {
+                /** @description Page number (1-based) */
+                page?: number;
+                /** @description Items per page */
+                limit?: number;
+                /** @description Search query */
+                q?: string;
+                /** @description Sort field */
+                sortBy?: string;
+                /** @description Sort order */
+                sortOrder?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Business categories retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBusinessCategoryDto"];
+            };
+        };
+        responses: {
+            /** @description Business category created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_findOne: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Business category retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business category not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Business category deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business category not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateBusinessCategoryDto"];
+            };
+        };
+        responses: {
+            /** @description Business category updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business category not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BusinessCategoriesController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Business category restored successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Business category not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6415,13 +6715,25 @@ export interface operations {
     };
     BrandsController_findAll: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Page number (1-based) */
+                page?: number;
+                /** @description Items per page */
+                limit?: number;
+                /** @description Search query */
+                q?: string;
+                /** @description Sort field */
+                sortBy?: string;
+                /** @description Sort order */
+                sortOrder?: "asc" | "desc";
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Brands retrieved successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6443,7 +6755,15 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Brand created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6462,7 +6782,15 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Brand retrieved successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Brand not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6481,7 +6809,15 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Brand deleted successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Brand not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6504,7 +6840,42 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Brand updated successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Brand not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BrandsController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Brand restored successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Brand not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6514,13 +6885,25 @@ export interface operations {
     };
     UnitsController_findAll: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Page number (1-based) */
+                page?: number;
+                /** @description Items per page */
+                limit?: number;
+                /** @description Search query */
+                q?: string;
+                /** @description Sort field */
+                sortBy?: string;
+                /** @description Sort order */
+                sortOrder?: "asc" | "desc";
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Units retrieved successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -6542,7 +6925,15 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Unit created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6561,7 +6952,15 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Unit retrieved successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unit not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6580,7 +6979,15 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Unit deleted successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unit not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6603,7 +7010,42 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Unit updated successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unit not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    UnitsController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Unit restored successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unit not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6723,18 +7165,49 @@ export interface operations {
     };
     FamilyController_findAll: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Page number (1-based) */
+                page?: number;
+                /** @description Items per page (max 100) */
+                limit?: number;
+                /** @description Search query for relationship or person names */
+                q?: string;
+                /** @description Sort field (default: createdAt) */
+                sortBy?: string;
+                /** @description Sort order: asc or desc */
+                sortOrder?: "asc" | "desc";
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Family relationships retrieved successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        data?: {
+                            id?: number;
+                            relationship?: string;
+                            person?: Record<string, never>;
+                            relative?: Record<string, never>;
+                            /** Format: date-time */
+                            createdAt?: string;
+                            /** Format: date-time */
+                            updatedAt?: string;
+                        }[];
+                        meta?: {
+                            total?: number;
+                            page?: number;
+                            limit?: number;
+                            totalPages?: number;
+                        };
+                    };
+                };
             };
         };
     };
@@ -6751,7 +7224,35 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Family relationship created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            id?: number;
+                            relationship?: string;
+                            person?: Record<string, never>;
+                            relative?: Record<string, never>;
+                            /** Format: date-time */
+                            createdAt?: string;
+                            /** Format: date-time */
+                            updatedAt?: string;
+                        };
+                    };
+                };
+            };
+            /** @description Bad request - Invalid data provided */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found - Person not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6764,13 +7265,35 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                /** @description Family relationship ID */
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Family relationship found */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            id?: number;
+                            relationship?: string;
+                            person?: Record<string, never>;
+                            relative?: Record<string, never>;
+                            /** Format: date-time */
+                            createdAt?: string;
+                            /** Format: date-time */
+                            updatedAt?: string;
+                        };
+                    };
+                };
+            };
+            /** @description Family relationship not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6783,13 +7306,27 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                /** @description Family relationship ID */
+                id: number;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Family relationship deleted successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: Record<string, never>;
+                        message?: string;
+                    };
+                };
+            };
+            /** @description Family relationship not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6802,7 +7339,8 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                /** @description Family relationship ID */
+                id: number;
             };
             cookie?: never;
         };
@@ -6812,7 +7350,35 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Family relationship updated successfully */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            id?: number;
+                            relationship?: string;
+                            person?: Record<string, never>;
+                            relative?: Record<string, never>;
+                            /** Format: date-time */
+                            createdAt?: string;
+                            /** Format: date-time */
+                            updatedAt?: string;
+                        };
+                    };
+                };
+            };
+            /** @description Bad request - Invalid data provided */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Family relationship not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

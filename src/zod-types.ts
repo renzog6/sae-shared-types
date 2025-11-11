@@ -64,22 +64,12 @@ const UpdateCompanyDto = z
   })
   .partial()
   .passthrough();
-const CreateBusinessCategoryDto = z
-  .object({
-    name: z.string(),
-    code: z.string().optional(),
-    information: z.string().optional(),
-  })
-  .passthrough();
-const UpdateBusinessCategoryDto = z
-  .object({ name: z.string(), code: z.string(), information: z.string() })
-  .partial()
-  .passthrough();
 const CreateBusinessSubCategoryDto = z
   .object({
     name: z.string(),
     description: z.string().optional(),
     businessCategoryId: z.number(),
+    isActive: z.boolean().optional(),
   })
   .passthrough();
 const UpdateBusinessSubCategoryDto = z
@@ -87,6 +77,26 @@ const UpdateBusinessSubCategoryDto = z
     name: z.string(),
     description: z.string(),
     businessCategoryId: z.number(),
+    isActive: z.boolean(),
+  })
+  .partial()
+  .passthrough();
+const CreateBusinessCategoryDto = z
+  .object({
+    name: z.string(),
+    code: z.string().optional(),
+    information: z.string().optional(),
+    isActive: z.boolean().optional(),
+    deletedAt: z.string().optional(),
+  })
+  .passthrough();
+const UpdateBusinessCategoryDto = z
+  .object({
+    name: z.string(),
+    code: z.string(),
+    information: z.string(),
+    isActive: z.boolean(),
+    deletedAt: z.string(),
   })
   .partial()
   .passthrough();
@@ -435,16 +445,18 @@ const UpdatePersonDto = z
   .passthrough();
 const CreateFamilyDto = z
   .object({
-    relationship: z.string(),
-    personId: z.number(),
-    relativeId: z.number(),
+    relationship: z.string().min(1).max(100),
+    personId: z.number().gte(1),
+    relativeId: z.number().gte(1),
+    information: z.string().max(500).optional(),
   })
   .passthrough();
 const UpdateFamilyDto = z
   .object({
-    relationship: z.string(),
-    personId: z.number(),
-    relativeId: z.number(),
+    relationship: z.string().min(1).max(100),
+    personId: z.number().gte(1),
+    relativeId: z.number().gte(1),
+    information: z.string().max(500),
   })
   .partial()
   .passthrough();
@@ -762,10 +774,10 @@ export const schemas = {
   AddressDto,
   CreateCompanyDto,
   UpdateCompanyDto,
-  CreateBusinessCategoryDto,
-  UpdateBusinessCategoryDto,
   CreateBusinessSubCategoryDto,
   UpdateBusinessSubCategoryDto,
+  CreateBusinessCategoryDto,
+  UpdateBusinessCategoryDto,
   CreateContactDto,
   UpdateContactDto,
   CreateEquipmentAxleDto,
@@ -899,12 +911,46 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "get",
     path: "/api/brands",
     alias: "BrandsController_findAll",
     requestFormat: "json",
+    parameters: [
+      {
+        name: "page",
+        type: "Query",
+        schema: z.number().gte(1).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().gte(1).lte(100).optional(),
+      },
+      {
+        name: "q",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional(),
+      },
+    ],
     response: z.void(),
   },
   {
@@ -920,6 +966,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Brand not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "patch",
@@ -939,6 +992,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Brand not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "delete",
@@ -953,6 +1013,34 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Brand not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/brands/:id/restore",
+    alias: "BrandsController_restore",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Brand not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "post",
@@ -1082,6 +1170,33 @@ const endpoints = makeApi([
     path: "/api/companies/categories",
     alias: "BusinessCategoriesController_findAll",
     requestFormat: "json",
+    parameters: [
+      {
+        name: "page",
+        type: "Query",
+        schema: z.number().gte(1).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().gte(1).lte(100).optional(),
+      },
+      {
+        name: "q",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional(),
+      },
+    ],
     response: z.void(),
   },
   {
@@ -1097,6 +1212,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "get",
@@ -1107,10 +1229,17 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business category not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "patch",
@@ -1126,10 +1255,17 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business category not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "delete",
@@ -1140,10 +1276,38 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business category not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/companies/categories/:id/restore",
+    alias: "BusinessCategoriesController_restore",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business category not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "get",
@@ -1152,9 +1316,29 @@ const endpoints = makeApi([
     requestFormat: "json",
     parameters: [
       {
-        name: "categoryId",
+        name: "page",
         type: "Query",
-        schema: z.string(),
+        schema: z.number().gte(1).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().gte(1).lte(100).optional(),
+      },
+      {
+        name: "q",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional(),
       },
     ],
     response: z.void(),
@@ -1172,6 +1356,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "get",
@@ -1182,10 +1373,17 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business subcategory not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "patch",
@@ -1201,10 +1399,17 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business subcategory not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "delete",
@@ -1215,10 +1420,38 @@ const endpoints = makeApi([
       {
         name: "id",
         type: "Path",
-        schema: z.string(),
+        schema: z.number(),
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business subcategory not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/companies/subcategories/:id/restore",
+    alias: "BusinessSubcategoriesController_restore",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Business subcategory not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "post",
@@ -2762,74 +2995,6 @@ const endpoints = makeApi([
     response: z.void(),
   },
   {
-    method: "post",
-    path: "/api/family",
-    alias: "FamilyController_create",
-    requestFormat: "json",
-    parameters: [
-      {
-        name: "body",
-        type: "Body",
-        schema: CreateFamilyDto,
-      },
-    ],
-    response: z.void(),
-  },
-  {
-    method: "get",
-    path: "/api/family",
-    alias: "FamilyController_findAll",
-    requestFormat: "json",
-    response: z.void(),
-  },
-  {
-    method: "get",
-    path: "/api/family/:id",
-    alias: "FamilyController_findOne",
-    requestFormat: "json",
-    parameters: [
-      {
-        name: "id",
-        type: "Path",
-        schema: z.string(),
-      },
-    ],
-    response: z.void(),
-  },
-  {
-    method: "patch",
-    path: "/api/family/:id",
-    alias: "FamilyController_update",
-    requestFormat: "json",
-    parameters: [
-      {
-        name: "body",
-        type: "Body",
-        schema: UpdateFamilyDto,
-      },
-      {
-        name: "id",
-        type: "Path",
-        schema: z.string(),
-      },
-    ],
-    response: z.void(),
-  },
-  {
-    method: "delete",
-    path: "/api/family/:id",
-    alias: "FamilyController_remove",
-    requestFormat: "json",
-    parameters: [
-      {
-        name: "id",
-        type: "Path",
-        schema: z.string(),
-      },
-    ],
-    response: z.void(),
-  },
-  {
     method: "get",
     path: "/api/health",
     alias: "HealthController_check",
@@ -3388,6 +3553,221 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+  },
+  {
+    method: "post",
+    path: "/api/persons/family",
+    alias: "FamilyController_create",
+    description: `Creates a new family relationship between two persons`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: CreateFamilyDto,
+      },
+    ],
+    response: z
+      .object({
+        data: z
+          .object({
+            id: z.number(),
+            relationship: z.string(),
+            person: z.object({}).partial().passthrough(),
+            relative: z.object({}).partial().passthrough(),
+            createdAt: z.string().datetime({ offset: true }),
+            updatedAt: z.string().datetime({ offset: true }),
+          })
+          .partial()
+          .passthrough(),
+      })
+      .partial()
+      .passthrough(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request - Invalid data provided`,
+        schema: z.void(),
+      },
+      {
+        status: 404,
+        description: `Not found - Person not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/api/persons/family",
+    alias: "FamilyController_findAll",
+    description: `Retrieves all family relationships with pagination and filtering`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "page",
+        type: "Query",
+        schema: z.number().gte(1).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().gte(1).lte(100).optional(),
+      },
+      {
+        name: "q",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional(),
+      },
+    ],
+    response: z
+      .object({
+        data: z.array(
+          z
+            .object({
+              id: z.number(),
+              relationship: z.string(),
+              person: z.object({}).partial().passthrough(),
+              relative: z.object({}).partial().passthrough(),
+              createdAt: z.string().datetime({ offset: true }),
+              updatedAt: z.string().datetime({ offset: true }),
+            })
+            .partial()
+            .passthrough()
+        ),
+        meta: z
+          .object({
+            total: z.number(),
+            page: z.number(),
+            limit: z.number(),
+            totalPages: z.number(),
+          })
+          .partial()
+          .passthrough(),
+      })
+      .partial()
+      .passthrough(),
+  },
+  {
+    method: "get",
+    path: "/api/persons/family/:id",
+    alias: "FamilyController_findOne",
+    description: `Retrieves a specific family relationship by its ID`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z
+      .object({
+        data: z
+          .object({
+            id: z.number(),
+            relationship: z.string(),
+            person: z.object({}).partial().passthrough(),
+            relative: z.object({}).partial().passthrough(),
+            createdAt: z.string().datetime({ offset: true }),
+            updatedAt: z.string().datetime({ offset: true }),
+          })
+          .partial()
+          .passthrough(),
+      })
+      .partial()
+      .passthrough(),
+    errors: [
+      {
+        status: 404,
+        description: `Family relationship not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/persons/family/:id",
+    alias: "FamilyController_update",
+    description: `Updates an existing family relationship`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: UpdateFamilyDto,
+      },
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z
+      .object({
+        data: z
+          .object({
+            id: z.number(),
+            relationship: z.string(),
+            person: z.object({}).partial().passthrough(),
+            relative: z.object({}).partial().passthrough(),
+            createdAt: z.string().datetime({ offset: true }),
+            updatedAt: z.string().datetime({ offset: true }),
+          })
+          .partial()
+          .passthrough(),
+      })
+      .partial()
+      .passthrough(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request - Invalid data provided`,
+        schema: z.void(),
+      },
+      {
+        status: 404,
+        description: `Family relationship not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "delete",
+    path: "/api/persons/family/:id",
+    alias: "FamilyController_remove",
+    description: `Deletes a family relationship by ID`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z
+      .object({
+        data: z.object({}).partial().passthrough(),
+        message: z.string(),
+      })
+      .partial()
+      .passthrough(),
+    errors: [
+      {
+        status: 404,
+        description: `Family relationship not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "post",
@@ -4289,12 +4669,46 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "get",
     path: "/api/units",
     alias: "UnitsController_findAll",
     requestFormat: "json",
+    parameters: [
+      {
+        name: "page",
+        type: "Query",
+        schema: z.number().gte(1).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().gte(1).lte(100).optional(),
+      },
+      {
+        name: "q",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortBy",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "sortOrder",
+        type: "Query",
+        schema: z.enum(["asc", "desc"]).optional(),
+      },
+    ],
     response: z.void(),
   },
   {
@@ -4310,6 +4724,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Unit not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "patch",
@@ -4329,6 +4750,13 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Unit not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "delete",
@@ -4343,6 +4771,34 @@ const endpoints = makeApi([
       },
     ],
     response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Unit not found`,
+        schema: z.void(),
+      },
+    ],
+  },
+  {
+    method: "patch",
+    path: "/api/units/:id/restore",
+    alias: "UnitsController_restore",
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.number(),
+      },
+    ],
+    response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Unit not found`,
+        schema: z.void(),
+      },
+    ],
   },
   {
     method: "post",
